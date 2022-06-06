@@ -1,3 +1,4 @@
+from re import S
 import numpy as np
 import turtle
 import os
@@ -90,7 +91,7 @@ def busqueda_amplitud(juego):
         for j in range(0, juego.shape[1]):
 
             if juego[i, j] == 0:
-                post_bot = (i, j)
+                post_bot = (i, j)               
                 juego[i, j] = 2  # Colocar la posición como un espacio libre
 
                 '''bot.pendown()  # bajar la pluma
@@ -141,8 +142,7 @@ def busqueda_amplitud(juego):
     cola = [raiz]
     nodos_expandidos = 1
     nodos_creados = 1
-    while True:
-
+    while True:       
         nodo = cola.pop(0)  # quito el primero elemento
         nodos_expandidos += 1
         # Condicion de ganar
@@ -157,6 +157,51 @@ def busqueda_amplitud(juego):
         # Condición de no encontrar
         if len(cola) == 0:
             return None, nodos_expandidos, nodos_creados
+        matriz = np.matrix(nodo.recorrido)
+        print(matriz)
+
+        bot = turtle.Turtle()
+
+        dot_distance = 55  # distancia entre puntos
+        width = 6  # ancho de la matriz
+        height = 6  # largo de la matriz
+        bot.speed(50)  # velocidad de dibujado
+        bot.penup()  # levanta la pluma
+        bot.goto(-200, 200) 
+        for i in range(0, juego.shape[0]):
+            for j in range(0, juego.shape[1]):
+
+                bot.pendown()  # bajar la pluma
+
+                if matriz[i, j] == 0:
+                    bot.fillcolor('blue')  # rellena los cuadrados de color azul
+
+                bot.begin_fill()  # empieza a pintar
+                bot.forward(50)  # traza una linea 50 pixeles
+                bot.right(90)  # gira 90 grados el dibujado
+                # se repite para completar el cuadrado
+                bot.forward(50)
+                bot.right(90)
+
+                bot.forward(50)
+                bot.right(90)
+
+                bot.forward(50)
+                bot.right(90)
+                bot.end_fill()  # finaliza el rellenado
+
+                bot.penup()  # termina de pintar
+                bot.forward(dot_distance)  # separa los los dibujos del pinsel
+
+            bot.backward(dot_distance*width)  # permite regresar al inicio el pinsel
+
+            # permite que el pinsel baje (recuadros)
+            bot.right(90)
+            bot.forward(dot_distance)
+            bot.left(90)
+
+   
+        
 
 
 def busqueda_profundidad(juego):
@@ -199,6 +244,8 @@ def busqueda_profundidad(juego):
 print(busqueda_amplitud(juego.copy()))
 print(busqueda_profundidad(juego.copy()))
 turtle.done()  # termina el trabajo
+
+
 '''wn = turtle.Screen()#crea la pantalla de la interfaz
 wn.title("Juego de buscando a nemo")#Le da el titulo a la ventana
 wn.setup(width = 500, height=500)#le da las dimesiones a la ventana
@@ -242,3 +289,4 @@ for y in range (height):# ciclo doble donde y  es la ultura
    robot.left(90)
 
 turtle.done()'''  # termina el trabajo
+
